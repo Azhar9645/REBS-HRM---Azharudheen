@@ -157,6 +157,15 @@ class _ReadyContent extends StatelessWidget {
                 '${state.gpsAccuracyMeters.round()} m',
                 style: AppTextStyles.caption,
               ),
+              if (state.lastKnownAt case final at?) ...[
+                const SizedBox(height: 4),
+                Text(
+                  'Using last known location from '
+                  '${_minutesAgo(at)} — no fresh GPS fix',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.caption,
+                ),
+              ],
             ],
           ),
         ),
@@ -236,4 +245,13 @@ class _ReadyContent extends StatelessWidget {
       ],
     );
   }
+}
+
+String _minutesAgo(DateTime at) {
+  final minutes = DateTime.now().difference(at).inMinutes;
+  return switch (minutes) {
+    < 1 => 'just now',
+    1 => '1 min ago',
+    _ => '$minutes min ago',
+  };
 }

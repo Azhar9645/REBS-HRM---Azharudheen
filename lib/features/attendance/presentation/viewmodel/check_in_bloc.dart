@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import '../../../../core/data/local/employee_local_data_source.dart';
 import '../../../../core/data/models/attendance_event_dto.dart';
 import '../../../../core/models/attendance_record.dart';
+import '../../../../core/network/connectivity_service.dart';
 import '../../../../core/network/location_service.dart';
 import '../../data/attendance_repository.dart';
 import 'check_in_event.dart';
@@ -15,10 +16,12 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
   CheckInBloc({
     required AttendanceAction action,
     LocationService? locationService,
+    ConnectivityService? connectivity,
     AttendanceRepository? attendanceRepository,
     EmployeeLocalDataSource? employeeLocal,
   }) : _action = action,
        _location = locationService ?? LocationService(),
+       _connectivity = connectivity ?? ConnectivityService(),
        _repository = attendanceRepository ?? AttendanceRepository(),
        _employeeLocal = employeeLocal ?? EmployeeLocalDataSource(),
        super(const CheckInLocating()) {
@@ -29,6 +32,7 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
 
   final AttendanceAction _action;
   final LocationService _location;
+  final ConnectivityService _connectivity;
   final AttendanceRepository _repository;
   final EmployeeLocalDataSource _employeeLocal;
 
@@ -63,7 +67,15 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
     }
 
     try {
-      final position = await _location.getCurrentPosition();
+      // Offline, a fresh fix rarely arrives (no network-assisted location),
+      // so don't keep the user waiting long before falling back to the
+      // last known position.
+      final online = await _connectivity.isOnlineSafe();
+      final (:position, :isLastKnown) = await _location.getCurrentPosition(
+        timeLimit: online
+            ? const Duration(seconds: 15)
+            : const Duration(seconds: 6),
+      );
       _lastPosition = position;
 
       final distance = _location.distanceBetween(
@@ -80,6 +92,7 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
           distanceMeters: distance,
           officeRadiusMeters: office.radiusMeters,
           gpsAccuracyMeters: position.accuracy,
+          lastKnownAt: isLastKnown ? position.timestamp : null,
           excessMetersLastChecked: within ? null : distance - office.radiusMeters,
         ),
       );

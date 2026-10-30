@@ -50,7 +50,7 @@ class ApplyLeaveSubmitRequested extends ApplyLeaveEvent {
 
 /// Dispatched by the screen once, right after creating the bloc, with the
 /// result of a one-time connectivity check (submitting requires being
-/// online; see DEVELOPMENT_PLAN.md Phase 8).
+/// online).
 class ApplyLeaveConnectivityChanged extends ApplyLeaveEvent {
   const ApplyLeaveConnectivityChanged({required this.isOffline});
 

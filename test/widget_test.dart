@@ -1,9 +1,9 @@
 // Smoke test: app boots, dashboard reads from a pre-seeded local cache
-// (no live mock server needed), and every Phase 1 screen is reachable
+// (no live mock server needed), and every screen is reachable
 // through real navigation without throwing.
 //
-// Meaningful feature tests (idempotency, offline persistence, leave
-// overlap validation, etc.) are added in Phase 9 per DEVELOPMENT_PLAN.md.
+// Feature tests (idempotency, offline persistence, leave overlap
+// validation, etc.) live in the other test files.
 
 import 'dart:io';
 

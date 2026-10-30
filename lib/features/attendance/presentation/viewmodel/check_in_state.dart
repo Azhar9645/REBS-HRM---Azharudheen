@@ -32,6 +32,7 @@ class CheckInReady extends CheckInState {
     required this.distanceMeters,
     required this.officeRadiusMeters,
     required this.gpsAccuracyMeters,
+    this.lastKnownAt,
     this.excessMetersLastChecked,
   });
 
@@ -39,6 +40,10 @@ class CheckInReady extends CheckInState {
   final double distanceMeters;
   final double officeRadiusMeters;
   final double gpsAccuracyMeters;
+
+  /// Set when no fresh fix arrived and the device's last known position
+  /// (taken at this time) was used instead.
+  final DateTime? lastKnownAt;
   final double? excessMetersLastChecked;
 
   bool get isWithinRange => distanceMeters <= officeRadiusMeters;
@@ -49,6 +54,7 @@ class CheckInReady extends CheckInState {
     distanceMeters,
     officeRadiusMeters,
     gpsAccuracyMeters,
+    lastKnownAt,
     excessMetersLastChecked,
   ];
 }

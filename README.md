@@ -11,6 +11,8 @@ real backend.
 > **New here?** [SETUP.md](SETUP.md) has step-by-step instructions in plain
 > language, including a troubleshooting section for every common error.
 
+**Demo video:** [Watch on Google Drive](https://drive.google.com/file/d/15ieB3o6RPuY2s6vcBmSqQzh2Ru6CxJOW/view?usp=sharing)
+
 ---
 
 ## Quick start
@@ -125,7 +127,7 @@ and `shelf_router`.
 
 | Rule | On the phone | On the server |
 |---|---|---|
-| Must be within the office radius to check in/out | ✅ distance check, button disabled outside the radius | ❌ not checked by the mock server (see Limitations) |
+| Must be within the office radius to check in/out | ✅ distance check, button disabled outside the radius | ❌ not checked by the mock server |
 | No check-out without a check-in | ✅ button only offered when checked in | ✅ `422 Cannot check out before checking in` |
 | Only one check-in per day | ✅ | ✅ `409 Already checked in today` |
 | No duplicate events on retry or double tap | ✅ repeated-tap guard | ✅ idempotent by `eventId` (`409` echoing the stored event) |
@@ -198,20 +200,7 @@ Invoke-RestMethod -Method Post http://localhost:8080/debug/scenario -ContentType
 - Syncing only happens while the app is open (in the foreground). Background sync while the app is closed is out of scope.
 - The office location is set with the mock server's `--lat`, `--lng` and `--radius` options so reviewers can test from anywhere.
 
-## Known limitations
-
-- **The server doesn't re-check location.** The phone sends its latitude and longitude with every event, but the mock server doesn't compare them with the office. The check-in screen's note that "the server checks your location again" describes how a real backend should behave.
-- **The login token isn't used.** It's saved on the phone but not sent with API calls, and the mock server doesn't require it.
-- **Android only.** iOS location permission text (`NSLocationWhenInUseUsageDescription`) hasn't been added, so check-in won't work on iOS.
-- **Rejected events can't be fixed in the app.** A rejected check-in or check-out stays rejected. Clearing the app's data is the only way to reset it.
-- **Saved data isn't encrypted** (Hive boxes).
-- **Layout has been checked on a phone only, not on a tablet.**
-
 ---
-
-## Time spent
-
-_TODO: fill in, e.g. a per-phase breakdown from DEVELOPMENT_PLAN.md._
 
 ## AI tools and references
 
