@@ -37,6 +37,14 @@ adb reverse tcp:8080 tcp:8080
 
 ---
 
+## Screenshots
+
+| Home | Leave | Sync |
+|:---:|:---:|:---:|
+| <img src="assets/Screenshot_20261030-181506.png" width="240" alt="Home: today's timer, check-in and check-out times, leave balance and recent attendance"> | <img src="assets/Screenshot_20261030-181515.png" width="240" alt="Leave: balance, Apply for leave button and request history with Approved and Rejected statuses"> | <img src="assets/Screenshot_20261030-181522.png" width="240" alt="Sync queue: Online chip, Pending, Synced and Rejected counts and the Sync now button"> |
+
+---
+
 ## Features
 
 | Screen | What it does |
@@ -209,5 +217,3 @@ _TODO: fill in, e.g. a per-phase breakdown from DEVELOPMENT_PLAN.md._
 
 - **Claude** (Anthropic) was used during development.
 - **UI design** was inspired by reference designs found on **Pinterest**.
-#   R E B S - H R M - - - A z h a r u d h e e n  
- 
